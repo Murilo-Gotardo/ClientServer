@@ -1,7 +1,7 @@
-use std::net::{UdpSocket};
-use std::sync::{Arc, Mutex};
-use std::thread;
+use std::net::{SocketAddr, UdpSocket};
+
 use local_ip_address::local_ip;
+
 use crate::requisition::Requisition;
 
 mod commands;
@@ -29,7 +29,7 @@ fn main() -> std::io::Result<()> {
                 let cleaned_json = json.trim_end_matches('\0');
                 let requisition = serde_json::from_str::<Requisition>(&cleaned_json).expect("cwe");
                 
-                resolve_requisition(requisition, &socket);
+                resolve_requisition(requisition, &socket, src);
             }
         },
         Err(e) => eprintln!("Falha ao pegar ip local: {}", e),
@@ -38,10 +38,10 @@ fn main() -> std::io::Result<()> {
     Ok(())
 }
 
-fn resolve_requisition(requisition: Requisition, socket: &UdpSocket) {
+fn resolve_requisition(requisition: Requisition, socket: &UdpSocket, addr: SocketAddr) {
     return match requisition.command() {
-        "set" => commands::set(requisition, socket),
-        "get" => commands::get(requisition, socket),
+        "set" => commands::set(requisition, socket, addr),
+        "get" => commands::get(requisition, socket, addr),
         _ => println!("Método não reconhecido")
     }
 }

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Default, Serialize, Deserialize, Debug, Clone)]
 pub struct Locale {
     pub(crate) locate: String,
     pub(crate) status: String,
@@ -8,5 +8,5 @@ pub struct Locale {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Locales {
-    pub(crate) locales: Vec<Locale>,
+    pub(crate) locale_list: Vec<Locale>,
 }
