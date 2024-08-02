@@ -3,12 +3,12 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Requisition {
     command: String,
-    locate: String,
+    locate: Option<String>,
     value: Option<String>
 }
 
 impl Requisition {
-    pub fn new(command: String, locate: String, value: Option<String>) -> Self {
+    pub fn new(command: String, locate: Option<String>, value: Option<String>) -> Self {
         Self { command, locate, value }
     }
 
@@ -16,7 +16,7 @@ impl Requisition {
         &self.command
     }
 
-    pub fn locate(&self) -> &str {
+    pub fn locate(&self) -> &Option<String> {
         &self.locate
     }
 

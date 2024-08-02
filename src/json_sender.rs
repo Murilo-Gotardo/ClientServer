@@ -1,19 +1,33 @@
 use std::net::{SocketAddr, UdpSocket};
-use serde_json::json;
-use crate::locales::Locale;
+use serde_json::{json, Value};
+use crate::locales::{Locale, Locales};
 
 pub struct JsonSender {
   
 }
 
+pub enum LocaleEnum {
+    Locale(Locale),
+    Locales(Locales),
+}
+
 impl JsonSender {
     
-    pub fn make_response_json(locale: Locale) -> String {
-        let data = json!({
-            "locate": locale.locate,
-            "status": locale.status
-        });
-
+    pub fn make_response_json(locale_enum: LocaleEnum) -> String {
+        let data = match locale_enum { 
+            LocaleEnum::Locale(locale) => {
+                json!({
+                    "locate": locale.locate,
+                    "status": locale.status
+                })
+            },
+            LocaleEnum::Locales(locales) => {
+                json!({
+                    "locale_list": locales.locale_list
+                })
+            }
+        };
+        
         let json_string = serde_json::to_string(&data).expect("Falha ao serializar JSON");
 
         return json_string

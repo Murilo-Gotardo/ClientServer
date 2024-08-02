@@ -42,6 +42,7 @@ fn resolve_requisition(requisition: Requisition, socket: &UdpSocket, addr: Socke
     return match requisition.command() {
         "set" => commands::set(requisition, socket, addr),
         "get" => commands::get(requisition, socket, addr),
+        "get_all" => commands::get_all(socket, addr),
         _ => println!("Método não reconhecido")
     }
 }
